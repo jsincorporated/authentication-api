@@ -54,8 +54,8 @@ app.patch("/update", auth, async (req, res) => {
     if (req.body.email) {
       user.email = req.body.email;
     }
-    if (req.body.role) {
-      user.role = req.body.role;
+    if (req.body.user_role) {
+      return res.status(409).send('You are not allowed to change your role.');
     }
     if (req.body.designation) {
       user.designation = req.body.designation;
@@ -90,8 +90,8 @@ app.post("/register", async (req, res) => {
     const { first_name, last_name, email, password, user_role, designation, company } = req.body;
 
     // Validate user input
-    if (!(email && password && first_name && last_name && user_role && designation && company)) {
-      res.status(400).send("All inputs(first_name, last_name, email, password, user_role, designation, company) are required to register");
+    if (!(email && password && first_name && last_name && user_role)) {
+      res.status(400).send("These inputs: first_name, last_name, email, password, user_role are required to register");
     }
 
     // check if user already exist
@@ -100,6 +100,11 @@ app.post("/register", async (req, res) => {
 
     if (oldUser) {
       return res.status(409).send("User Already Exist. Please Login");
+    }
+
+    // check if role is valid
+    if (!(user_role == 'ADMIN' || user_role == 'TECHNICIAN' || user_role == 'MEMBER')) {
+      return res.status(409).send("user_role is not valid, valid roles include [ADMIN, MEMBER, TECHNICIAN].");
     }
 
     //Encrypt user password
