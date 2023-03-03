@@ -24,3 +24,7 @@ Allows users to retrieve their own information, including first and last names, 
 `PATCH` /update
 
 Allows users to update their own information, including first and last names, password, email address, designation and company.
+
+`DELETE` /delete
+
+Allows users to delete their own account.
